@@ -198,7 +198,7 @@ export const GodfatherMusic: React.FC = () => {
       return;
     }
 
-    analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+    analyserRef.current.getByteFrequencyData(dataArrayRef.current as any);
     const len = dataArrayRef.current.length;
 
     // Overall average amplitude (0-1)
