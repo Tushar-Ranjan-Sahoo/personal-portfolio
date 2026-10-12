@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { GodfatherMusic } from '../ui/GodfatherMusic';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
+
+      {/* Cinematic Godfather Music — covers the entire website */}
+      <GodfatherMusic />
     </div>
   );
 };

@@ -316,6 +316,491 @@
 
 
 /* =========================================================
+   GODFATHER MUSIC — AMBIENT GOLDEN VIGNETTE
+   Warm radial glow that covers the viewport edges
+   ========================================================= */
+
+.godfather-ambient-vignette {
+  background:
+    radial-gradient(ellipse at 0% 0%,
+      rgba(203, 168, 100, 0.06) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at 100% 0%,
+      rgba(203, 168, 100, 0.04) 0%,
+      transparent 45%),
+    radial-gradient(ellipse at 50% 100%,
+      rgba(203, 168, 100, 0.05) 0%,
+      transparent 55%),
+    radial-gradient(ellipse at 100% 100%,
+      rgba(223, 183, 108, 0.03) 0%,
+      transparent 40%);
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — FILM GRAIN
+   Subtle noise texture for vintage cinema atmosphere
+   ========================================================= */
+
+@keyframes godfather-grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(3%, 1%); }
+  30%  { transform: translate(-1%, 4%); }
+  40%  { transform: translate(4%, -2%); }
+  50%  { transform: translate(-3%, 2%); }
+  60%  { transform: translate(2%, -4%); }
+  70%  { transform: translate(-4%, 1%); }
+  80%  { transform: translate(1%, 3%); }
+  90%  { transform: translate(3%, -1%); }
+}
+
+.godfather-film-grain {
+  pointer-events: none;
+  opacity: 0.025;
+  animation: godfather-grain 0.8s steps(8) infinite;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — LAYER 1: SCROLLING NOTES
+   Classic right-to-left musical score flow
+   ========================================================= */
+
+@keyframes godfather-scroll {
+  0% {
+    transform: translateX(100vw) translateY(0);
+    opacity: 0;
+  }
+  3% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-10vw) translateY(0);
+    opacity: 0;
+  }
+}
+
+.godfather-note {
+  position: absolute;
+  right: 0;
+  color: #cba864;
+  font-family: 'Cormorant Garamond', serif;
+  will-change: transform, opacity, text-shadow;
+  animation: godfather-scroll linear infinite;
+  pointer-events: none;
+  user-select: none;
+  text-shadow: 0 0 6px rgba(203, 168, 100, 0.18);
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — LAYER 2: DRIFTING NOTES
+   Float upward with gentle rotation and opacity fade
+   ========================================================= */
+
+@keyframes godfather-drift {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(40vh) rotate(180deg) scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* Slight horizontal sway added via a secondary animation */
+@keyframes godfather-sway {
+  0%, 100% { margin-left: 0; }
+  25% { margin-left: 15px; }
+  75% { margin-left: -15px; }
+}
+
+.godfather-drift-note {
+  position: absolute;
+  bottom: 0;
+  color: #cba864;
+  font-family: 'Cormorant Garamond', serif;
+  will-change: transform, opacity;
+  animation:
+    godfather-drift linear infinite,
+    godfather-sway ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+  text-shadow: 0 0 4px rgba(203, 168, 100, 0.12);
+}
+
+/* The sway animation runs at half the drift duration */
+.godfather-drift-note {
+  animation-duration: inherit, 8s;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — LAYER 3: GOLDEN DUST PARTICLES
+   Tiny shimmering motes that float upward
+   ========================================================= */
+
+@keyframes godfather-dust-rise {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    transform: translateY(85vh) scale(1);
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-5vh) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes godfather-dust-twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.godfather-dust {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #edd6a3 0%, #cba864 60%, transparent 100%);
+  will-change: transform, opacity;
+  animation:
+    godfather-dust-rise linear infinite,
+    godfather-dust-twinkle 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — LAYER 4: MUSICAL STAFF LINES
+   Ghostly horizontal lines that breathe in/out
+   ========================================================= */
+
+@keyframes godfather-staff-breathe {
+  0%   { opacity: 0; transform: scaleX(0.3); }
+  20%  { opacity: 1; transform: scaleX(1); }
+  80%  { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0.3); }
+}
+
+.godfather-staff-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(203, 168, 100, 0.12) 20%,
+    rgba(203, 168, 100, 0.18) 50%,
+    rgba(203, 168, 100, 0.12) 80%,
+    transparent 100%
+  );
+  transform-origin: center;
+  animation: godfather-staff-breathe 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — LAYER 5: LIGHT STREAKS
+   Diagonal golden rays that slowly sweep across
+   ========================================================= */
+
+@keyframes godfather-streak-sweep-1 {
+  0%   { transform: translateX(-100%) rotate(25deg); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateX(200vw) rotate(25deg); opacity: 0; }
+}
+
+@keyframes godfather-streak-sweep-2 {
+  0%   { transform: translateX(200vw) rotate(-20deg); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateX(-100%) rotate(-20deg); opacity: 0; }
+}
+
+@keyframes godfather-streak-sweep-3 {
+  0%   { transform: translateX(-50%) rotate(15deg); opacity: 0; }
+  40%  { opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translateX(150vw) rotate(15deg); opacity: 0; }
+}
+
+.godfather-light-streak {
+  position: absolute;
+  width: 300px;
+  pointer-events: none;
+}
+
+.godfather-light-streak-1 {
+  top: 15%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(203, 168, 100, 0.25) 30%,
+    rgba(223, 183, 108, 0.5) 50%,
+    rgba(203, 168, 100, 0.25) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px rgba(203, 168, 100, 0.15);
+  animation: godfather-streak-sweep-1 25s ease-in-out infinite;
+}
+
+.godfather-light-streak-2 {
+  top: 55%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(203, 168, 100, 0.2) 30%,
+    rgba(223, 183, 108, 0.4) 50%,
+    rgba(203, 168, 100, 0.2) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 15px rgba(203, 168, 100, 0.1);
+  animation: godfather-streak-sweep-2 32s ease-in-out infinite;
+  animation-delay: 8s;
+}
+
+.godfather-light-streak-3 {
+  top: 82%;
+  height: 1px;
+  width: 200px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(203, 168, 100, 0.15) 30%,
+    rgba(223, 183, 108, 0.35) 50%,
+    rgba(203, 168, 100, 0.15) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(203, 168, 100, 0.08);
+  animation: godfather-streak-sweep-3 28s ease-in-out infinite;
+  animation-delay: 14s;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — PLAYER BUTTONS
+   ========================================================= */
+
+.godfather-player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  color: #cba864;
+  background: rgba(8, 8, 8, 0.92);
+  border: 1px solid rgba(203, 168, 100, 0.25);
+  border-radius: 50%;
+
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    color 300ms ease,
+    background 300ms ease,
+    transform 300ms ease;
+}
+
+.godfather-player-btn:hover {
+  border-color: rgba(203, 168, 100, 0.55);
+  color: #dfd6c5;
+  box-shadow:
+    0 0 16px rgba(203, 168, 100, 0.18),
+    0 0 4px rgba(203, 168, 100, 0.1);
+  background: rgba(12, 11, 9, 0.96);
+  transform: scale(1.08);
+}
+
+.godfather-player-btn:active {
+  transform: scale(0.95);
+}
+
+.godfather-player-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.godfather-player-btn:focus-visible {
+  outline: 2px solid #cba864;
+  outline-offset: 3px;
+}
+
+/* Primary Play/Pause button — Larger */
+.godfather-player-btn--primary {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(203, 168, 100, 0.35);
+  overflow: hidden;
+}
+
+.godfather-player-btn--primary:hover {
+  box-shadow:
+    0 0 22px rgba(203, 168, 100, 0.25),
+    0 0 6px rgba(203, 168, 100, 0.15),
+    inset 0 0 12px rgba(203, 168, 100, 0.05);
+}
+
+.godfather-player-btn--primary.is-playing {
+  border-color: rgba(203, 168, 100, 0.5);
+  box-shadow:
+    0 0 18px rgba(203, 168, 100, 0.15),
+    0 0 4px rgba(203, 168, 100, 0.1);
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — SPINNING DISC RING
+   Vinyl record animation inside the play button
+   ========================================================= */
+
+@keyframes godfather-disc-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.godfather-disc-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px dashed rgba(203, 168, 100, 0.0);
+  transform: translate(-50%, -50%);
+  transition: border-color 0.5s ease;
+  pointer-events: none;
+}
+
+.godfather-disc-ring.is-spinning {
+  border-color: rgba(203, 168, 100, 0.15);
+  animation: godfather-disc-spin 4s linear infinite;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — WAVEFORM BARS
+   Mini equalizer visualization
+   ========================================================= */
+
+@keyframes godfather-bar-dance {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+.godfather-waveform-bar {
+  width: 2px;
+  min-height: 2px;
+  background: linear-gradient(to top, #cba864, #edd6a3);
+  border-radius: 1px;
+  transform-origin: bottom;
+  animation: godfather-bar-dance 0.8s ease-in-out infinite alternate;
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — NOW PLAYING LABEL
+   ========================================================= */
+
+.godfather-now-playing {
+  padding: 6px 14px 6px 10px;
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid rgba(203, 168, 100, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+
+/* =========================================================
+   GODFATHER MUSIC — RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .godfather-player-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .godfather-player-btn--primary {
+    width: 42px;
+    height: 42px;
+  }
+
+  .godfather-note {
+    font-size: 0.8em !important;
+  }
+
+  .godfather-drift-note {
+    font-size: 0.75em !important;
+  }
+
+  .godfather-dust {
+    transform: scale(0.7) !important;
+  }
+
+  .godfather-staff-line {
+    left: 5%;
+    right: 5%;
+  }
+
+  .godfather-light-streak {
+    width: 150px;
+  }
+
+  .godfather-film-grain {
+    opacity: 0.015;
+  }
+}
+
+@media (max-width: 480px) {
+  .godfather-player-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .godfather-player-btn--primary {
+    width: 38px;
+    height: 38px;
+  }
+
+  .godfather-light-streak {
+    display: none;
+  }
+}
+
+
+/* =========================================================
    REDUCED MOTION
    ========================================================= */
 
@@ -340,5 +825,26 @@
   .archive-card,
   .timeline-seal {
     transition: none;
+  }
+
+  /* Disable all Godfather music animations */
+  .godfather-note,
+  .godfather-drift-note,
+  .godfather-dust,
+  .godfather-staff-line,
+  .godfather-light-streak,
+  .godfather-film-grain {
+    animation: none !important;
+    display: none;
+  }
+
+  .godfather-player-btn,
+  .godfather-disc-ring {
+    animation: none !important;
+    transition: none;
+  }
+
+  .godfather-waveform-bar {
+    animation: none !important;
   }
 }
