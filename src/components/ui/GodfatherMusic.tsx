@@ -128,6 +128,7 @@ export const GodfatherMusic: React.FC = () => {
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const animFrameRef = useRef<number>(0);
   const dataArrayRef = useRef<Uint8Array | null>(null);
+  const smokeCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   /* ----- Reduced motion ----- */
   useEffect(() => {
@@ -136,36 +137,6 @@ export const GodfatherMusic: React.FC = () => {
     const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  /* ----- Initialize Audio Element ----- */
-  useEffect(() => {
-    const audio = new Audio(godfatherTheme);
-    audio.loop = true;
-    audio.preload = 'auto';
-    audio.volume = 0.45;
-    audioRef.current = audio;
-
-    const onCanPlay = () => setAudioReady(true);
-    const onError = () => {
-      console.warn('[GodfatherMusic] Audio failed to load:', godfatherTheme);
-      setAudioReady(false);
-    };
-
-    audio.addEventListener('canplaythrough', onCanPlay);
-    audio.addEventListener('error', onError);
-
-    return () => {
-      audio.removeEventListener('canplaythrough', onCanPlay);
-      audio.removeEventListener('error', onError);
-      audio.pause();
-      audio.src = '';
-
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-      if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-        audioCtxRef.current.close().catch(() => {});
-      }
-    };
   }, []);
 
   /* ----- Web Audio API: Analyser setup ----- */
@@ -215,7 +186,212 @@ export const GodfatherMusic: React.FC = () => {
     animFrameRef.current = requestAnimationFrame(tickAnalyser);
   }, []);
 
-  /* ----- Play / Pause ----- */
+  /* ----- Core Play Logic ----- */
+  const startPlayback = useCallback(async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    try {
+      initAnalyser();
+      if (audioCtxRef.current?.state === 'suspended') {
+        await audioCtxRef.current.resume();
+      }
+      await audio.play();
+      setIsPlaying(true);
+      if (!animFrameRef.current) {
+        animFrameRef.current = requestAnimationFrame(tickAnalyser);
+      }
+    } catch (err) {
+      // Browser autoplay restriction will be handled on first user interaction
+    }
+  }, [initAnalyser, tickAnalyser]);
+
+  /* ----- Initialize Audio Element & Auto-play Handlers ----- */
+  useEffect(() => {
+    const audio = new Audio(godfatherTheme);
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = 0.45;
+    audioRef.current = audio;
+
+    const onCanPlay = () => {
+      setAudioReady(true);
+      // Attempt auto-playback as soon as audio is buffered
+      startPlayback();
+    };
+
+    const onError = () => {
+      console.warn('[GodfatherMusic] Audio failed to load:', godfatherTheme);
+      setAudioReady(false);
+    };
+
+    audio.addEventListener('canplaythrough', onCanPlay);
+    audio.addEventListener('error', onError);
+
+    // Listen for custom trigger from LoadingScreen or global interactions
+    const handleGodfatherPlay = () => {
+      startPlayback();
+    };
+    window.addEventListener('godfather-play', handleGodfatherPlay);
+
+    // Global first-interaction unlock (click, tap, key, scroll)
+    const handleFirstGesture = () => {
+      startPlayback();
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+      window.removeEventListener('touchstart', handleFirstGesture);
+      window.removeEventListener('scroll', handleFirstGesture);
+    };
+
+    window.addEventListener('click', handleFirstGesture);
+    window.addEventListener('keydown', handleFirstGesture);
+    window.addEventListener('touchstart', handleFirstGesture);
+    window.addEventListener('scroll', handleFirstGesture, { passive: true });
+
+    return () => {
+      audio.removeEventListener('canplaythrough', onCanPlay);
+      audio.removeEventListener('error', onError);
+      window.removeEventListener('godfather-play', handleGodfatherPlay);
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+      window.removeEventListener('touchstart', handleFirstGesture);
+      window.removeEventListener('scroll', handleFirstGesture);
+      audio.pause();
+      audio.src = '';
+
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
+        audioCtxRef.current.close().catch(() => {});
+      }
+    };
+  }, [startPlayback]);
+
+  /* ----- Continuous Golden Smoke & Ember Canvas ----- */
+  useEffect(() => {
+    const canvas = smokeCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const smokeClouds = Array.from({ length: 8 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: Math.random() * 340 + 240,
+      vx: (Math.random() - 0.5) * 0.26,
+      vy: (Math.random() - 0.5) * 0.2,
+      opacity: Math.random() * 0.08 + 0.05,
+      offset: Math.random() * 10,
+    }));
+
+    const floatingEmbers = Array.from({ length: 55 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2.6 + 0.8,
+      vx: (Math.random() - 0.45) * 0.35,
+      vy: -Math.random() * 0.55 - 0.15,
+      opacity: Math.random() * 0.75 + 0.25,
+      flicker: Math.random() * 0.025 + 0.01,
+      angle: Math.random() * Math.PI * 2,
+    }));
+
+    let time = 0;
+
+    const renderAtmosphere = () => {
+      time += 0.012;
+      ctx.clearRect(0, 0, width, height);
+
+      // Render drifting golden smoke plumes
+      smokeClouds.forEach((cloud) => {
+        cloud.x += cloud.vx;
+        cloud.y += cloud.vy;
+
+        if (cloud.x < -cloud.radius) cloud.x = width + cloud.radius;
+        if (cloud.x > width + cloud.radius) cloud.x = -cloud.radius;
+        if (cloud.y < -cloud.radius) cloud.y = height + cloud.radius;
+        if (cloud.y > height + cloud.radius) cloud.y = -cloud.radius;
+
+        const pulse = Math.sin(time + cloud.offset) * 0.015;
+        const currentAlpha = Math.max(0.02, cloud.opacity + pulse);
+
+        const grad = ctx.createRadialGradient(
+          cloud.x,
+          cloud.y,
+          0,
+          cloud.x,
+          cloud.y,
+          cloud.radius
+        );
+        grad.addColorStop(0, `rgba(225, 185, 105, ${currentAlpha * 1.6})`);
+        grad.addColorStop(0.45, `rgba(185, 140, 65, ${currentAlpha * 0.85})`);
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cloud.x, cloud.y, cloud.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Render floating amber ember particles with halo glow
+      floatingEmbers.forEach((ember) => {
+        ember.y += ember.vy;
+        ember.x += ember.vx + Math.sin(time + ember.angle) * 0.25;
+
+        if (ember.y < -10) {
+          ember.y = height + 10;
+          ember.x = Math.random() * width;
+        }
+        if (ember.x < -10) ember.x = width + 10;
+        if (ember.x > width + 10) ember.x = -10;
+
+        const flickerVal = (Math.sin(time * ember.flicker * 60) + 1) * 0.5;
+        const alpha = ember.opacity * (0.45 + flickerVal * 0.55);
+
+        ctx.fillStyle = `rgba(255, 235, 180, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(ember.x, ember.y, ember.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (ember.size > 1.2) {
+          const glow = ctx.createRadialGradient(
+            ember.x,
+            ember.y,
+            0,
+            ember.x,
+            ember.y,
+            ember.size * 3.5
+          );
+          glow.addColorStop(0, `rgba(230, 190, 105, ${alpha * 0.6})`);
+          glow.addColorStop(1, 'rgba(203, 168, 100, 0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(ember.x, ember.y, ember.size * 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      animId = requestAnimationFrame(renderAtmosphere);
+    };
+
+    renderAtmosphere();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
+  /* ----- Play / Pause Toggle ----- */
   const togglePlay = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -230,19 +406,9 @@ export const GodfatherMusic: React.FC = () => {
       setBassIntensity(0);
       setIsPlaying(false);
     } else {
-      try {
-        initAnalyser();
-        if (audioCtxRef.current?.state === 'suspended') {
-          await audioCtxRef.current.resume();
-        }
-        await audio.play();
-        setIsPlaying(true);
-        animFrameRef.current = requestAnimationFrame(tickAnalyser);
-      } catch (err) {
-        console.warn('[GodfatherMusic] Playback error:', err);
-      }
+      await startPlayback();
     }
-  }, [isPlaying, initAnalyser, tickAnalyser]);
+  }, [isPlaying, startPlayback]);
 
   /* ----- Mute / Unmute ----- */
   const toggleMute = useCallback(() => {
@@ -283,7 +449,17 @@ export const GodfatherMusic: React.FC = () => {
       >
 
         {/* ---------------------------------------------------
-            LAYER 0 — AMBIENT GOLDEN VIGNETTE (Music-reactive)
+            LAYER 0 — PERSISTENT GOLDEN SMOKE & EMBER CANVAS
+            Cinematic atmosphere that seamlessly continues across the site
+            --------------------------------------------------- */}
+        <canvas
+          ref={smokeCanvasRef}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{ opacity: isPlaying ? 0.85 : 0.65, transition: 'opacity 0.8s ease' }}
+        />
+
+        {/* ---------------------------------------------------
+            LAYER 0.1 — AMBIENT GOLDEN VIGNETTE (Music-reactive)
             A warm radial glow that pulses with the bass
             --------------------------------------------------- */}
         <div
@@ -308,12 +484,13 @@ export const GodfatherMusic: React.FC = () => {
             --------------------------------------------------- */}
         {showAnimations && SCROLLING_NOTES.map((note, i) => {
           const pulseGlow = glowScale > 0
-            ? `0 0 ${8 + glowScale * 22}px rgba(203, 168, 100, ${0.2 + glowScale * 0.5}),
-               0 0 ${4 + glowScale * 8}px rgba(223, 183, 108, ${0.1 + glowScale * 0.3})`
-            : '0 0 6px rgba(203, 168, 100, 0.15)';
+            ? `0 0 ${10 + glowScale * 25}px rgba(203, 168, 100, ${0.3 + glowScale * 0.5}),
+               0 0 ${5 + glowScale * 10}px rgba(223, 183, 108, ${0.2 + glowScale * 0.3})`
+            : '0 0 8px rgba(203, 168, 100, 0.28)';
 
           const pulseScale = 1 + glowScale * 0.18;
           const drift = Math.sin((i * 0.8) + glowScale * 3) * 4;
+          const noteOpacity = Math.min(Math.max(note.opacity * 1.8, 0.32) + glowScale * 0.22, 0.9);
 
           return (
             <span
@@ -322,16 +499,22 @@ export const GodfatherMusic: React.FC = () => {
               style={{
                 top: note.top,
                 fontSize: note.size,
-                opacity: note.opacity + glowScale * 0.18,
+                opacity: noteOpacity,
                 animationDelay: note.delay,
                 animationDuration: note.duration,
                 textShadow: pulseGlow,
-                '--drift-y': `${drift}px`,
-                transform: `scale(${pulseScale}) translateY(var(--drift-y, 0px))`,
-                transition: 'text-shadow 0.4s ease, opacity 0.4s ease, transform 0.4s ease',
-              } as React.CSSProperties}
+                transition: 'text-shadow 0.4s ease, opacity 0.4s ease',
+              }}
             >
-              {note.symbol}
+              <span
+                style={{
+                  display: 'inline-block',
+                  transform: `scale(${pulseScale}) translateY(${drift}px)`,
+                  transition: 'transform 0.4s ease',
+                }}
+              >
+                {note.symbol}
+              </span>
             </span>
           );
         })}
@@ -342,8 +525,9 @@ export const GodfatherMusic: React.FC = () => {
             --------------------------------------------------- */}
         {showAnimations && DRIFTING_NOTES.map((note, i) => {
           const floatGlow = glowScale > 0
-            ? `0 0 ${10 + glowScale * 16}px rgba(203, 168, 100, ${0.15 + glowScale * 0.4})`
-            : '0 0 4px rgba(203, 168, 100, 0.1)';
+            ? `0 0 ${12 + glowScale * 18}px rgba(203, 168, 100, ${0.25 + glowScale * 0.4})`
+            : '0 0 6px rgba(203, 168, 100, 0.22)';
+          const driftOpacity = Math.min(Math.max(note.opacity * 2.2, 0.28) + glowScale * 0.2, 0.85);
 
           return (
             <span
@@ -352,7 +536,7 @@ export const GodfatherMusic: React.FC = () => {
               style={{
                 left: note.left,
                 fontSize: note.size,
-                opacity: note.opacity + glowScale * 0.12,
+                opacity: driftOpacity,
                 animationDelay: note.delay,
                 animationDuration: note.duration,
                 textShadow: floatGlow,
