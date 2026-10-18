@@ -154,9 +154,9 @@ export const ContactSection: React.FC = () => {
 
           {/* PDF iframe — the star of the left column */}
           <div
-            className="relative rounded-sm overflow-hidden"
+            className="relative rounded-sm overflow-hidden w-full max-w-[560px] mx-auto lg:max-w-none"
             style={{
-              height: 'clamp(440px, 64vh, 680px)',
+              aspectRatio: '612 / 792',
               boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(223,183,108,0.12)',
             }}
           >
@@ -172,8 +172,6 @@ export const ContactSection: React.FC = () => {
               className="w-full h-full border-0 bg-[#0d0c0a]"
               aria-label="Resume PDF Viewer"
             />
-            {/* Fade bottom edge into background */}
-            <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-[#080705] to-transparent pointer-events-none" />
           </div>
 
           {/* Open in new tab */}
