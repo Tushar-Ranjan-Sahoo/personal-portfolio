@@ -25,7 +25,7 @@ export const HeroSection: React.FC = () => {
             {/* Welcome Eyebrow & Decorative Line */}
             <div className="mb-3 sm:mb-6">
               <span className="text-[8px] sm:text-[11px] tracking-[0.22em] sm:tracking-[0.35em] uppercase text-[#a99775] font-semibold block font-sans">
-                WELCOME.
+                TUSHAR RANJAN SAHOO · SYSTEMS ENGINEER
               </span>
               {/* Decorative ornate rule */}
               <div className="flex items-center space-x-1.5 sm:space-x-2 mt-1 sm:mt-3 w-20 sm:w-40 opacity-70">
@@ -44,7 +44,7 @@ export const HeroSection: React.FC = () => {
 
             {/* Secondary Subheadline / Body */}
             <p className="mt-2 sm:mt-4 text-[9.5px] sm:text-xs leading-relaxed text-[#8f8576] font-normal max-w-md font-sans">
-              I build digital experiences with timeless design, strategic thinking, and attention to detail.
+              Systems Engineer at Tata Consultancy Services specializing in Spring Boot microservices, high-throughput backend architecture, and robust digital systems.
             </p>
 
             {/* Call to action button/link */}

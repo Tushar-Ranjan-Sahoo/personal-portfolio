@@ -21,14 +21,38 @@ interface ExperienceEntry {
 const experiences: ExperienceEntry[] = [
   {
     archiveNo: 'ARCHIVE 01',
-    dateShort: 'SEP MMXXIV – PRESENT',
-    dateLong: 'September 2024 — Present',
+    dateShort: 'MAY MMXXV – PRESENT',
+    dateLong: 'May 2025 — Present',
+    role: 'Systems Engineer',
+    company: 'Tata Consultancy Services (TCS)',
+    division: 'Pune, Maharashtra • Cloud & Microservices',
+    description:
+      'Modernizing enterprise Data Service APIs from Spring MVC to Spring Boot 3.2.0 and upgrading Java 8 → Java 21, transitioning monolithic modules to standalone microservices with Spring Cloud (achieving 40% faster deployments & 30% faster startup). Collaborating in HLD/LLD architectural design, delivering i18n across 7 local languages, enforcing Spring Security 6 session governance with 30-day persistent sessions, reducing DB queries by 60% via sub-millisecond Redis caching, and securing full test coverage with JUnit 5 and Mockito.',
+    tags: ['SPRING BOOT 3.2', 'JAVA 21', 'MICROSERVICES', 'REDIS CACHING', 'SPRING SECURITY 6', 'JUNIT 5 & MOCKITO'],
+    badge: (
+      <div className="px-4 py-3 rounded-sm text-left md:text-right w-full md:w-auto">
+        <span className="font-serif font-black tracking-[0.2em] text-xl sm:text-2xl text-stone-100 block leading-tight">
+          TATA
+        </span>
+        <span className="font-serif text-[10px] sm:text-xs tracking-[0.22em] text-[#dfb76c] block leading-tight mt-0.5 uppercase">
+          Consultancy Services
+        </span>
+        <span className="font-serif text-[8px] tracking-[0.25em] text-[#c5a059]/70 uppercase block mt-1 border-t border-[#c5a059]/20 pt-1">
+          SYSTEMS & CLOUD
+        </span>
+      </div>
+    ),
+  },
+  {
+    archiveNo: 'ARCHIVE 02',
+    dateShort: 'SEP MMXXIV – MAY MMXXV',
+    dateLong: 'September 2024 — May 2025',
     role: 'Associate Software Engineer',
     company: 'Tech Mahindra',
-    division: 'Enterprise Engineering',
+    division: 'Bengaluru, Karnataka • Enterprise Full Stack',
     description:
-      'Architecting enterprise software solutions utilizing Java, Spring Framework, RESTful APIs, and cloud microservices. Actively driving modular application development, production deployments, and continuous system resilience.',
-    tags: ['JAVA', 'SPRING FRAMEWORK', 'MICROSERVICES'],
+      'Participated in enterprise Java Full Stack Development and DevOps training programs. Developed and maintained robust enterprise web applications using Java, JSP, Spring, Spring Boot, and React, orchestrating automated CI/CD deployment pipelines using Jenkins, Docker, and Maven.',
+    tags: ['JAVA FULL STACK', 'SPRING BOOT', 'REACT.JS', 'CI/CD & DOCKER', 'MAVEN'],
     badge: (
       <div className="px-4 py-3 rounded-sm text-left md:text-right w-full md:w-auto">
         <span className="font-sans font-black tracking-tight text-xl sm:text-2xl text-stone-100 block leading-none">
@@ -44,7 +68,7 @@ const experiences: ExperienceEntry[] = [
     ),
   },
   {
-    archiveNo: 'ARCHIVE 02',
+    archiveNo: 'ARCHIVE 03',
     dateShort: 'JUN MMXXIV – SEP MMXXIV',
     dateLong: 'June 2024 — September 2024',
     role: 'Test Engineer',
@@ -79,7 +103,7 @@ const experiences: ExperienceEntry[] = [
     ),
   },
   {
-    archiveNo: 'ARCHIVE 03',
+    archiveNo: 'ARCHIVE 04',
     dateShort: 'MAY MMXXIV – MAY MMXXIV',
     dateLong: 'May 2024',
     role: 'Software Development Engineer',
@@ -103,7 +127,7 @@ const experiences: ExperienceEntry[] = [
     ),
   },
   {
-    archiveNo: 'ARCHIVE 04',
+    archiveNo: 'ARCHIVE 05',
     dateShort: 'JUN MMXXII – AUG MMXXII',
     dateLong: 'June 2022 — August 2022',
     role: 'Web Development Intern',
@@ -306,6 +330,224 @@ export const ExperienceSection: React.FC = () => {
               </article>
             ))}
           </div>
+        </div>
+
+        {/* ══ COMPETITIVE PROBLEM SOLVING ══════════════════════════ */}
+        <div id="problem-solving" className="mt-20 sm:mt-28 reveal-item scroll-hidden scroll-mt-24 sm:scroll-mt-28" data-delay="100">
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center space-x-3 mb-2">
+              <span className="w-6 sm:w-12 h-[1px] bg-gradient-to-r from-transparent to-[#dfb76c]/50" />
+              <span className="font-serif text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-[#edd89f]/80">
+                ALGORITHMIC MASTERY
+              </span>
+              <span className="w-6 sm:w-12 h-[1px] bg-gradient-to-l from-transparent to-[#dfb76c]/50" />
+            </div>
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.2em] uppercase text-gold-leaf">
+              PROBLEM SOLVING
+            </h3>
+            <p className="font-serif italic text-xs sm:text-sm text-[#fae3ad]/60 mt-1">
+              Active participant in competitive programming & high-caliber algorithmic challenges
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* LeetCode */}
+            <div className="archive-card rounded-sm p-6 relative overflow-hidden flex flex-col justify-between group hover:border-[#dfb76c]/50 transition-all duration-300">
+              <CornerAccents />
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-serif font-bold text-base sm:text-lg tracking-wider text-stone-100">
+                    LeetCode
+                  </span>
+                  <span className="text-[9px] font-serif tracking-[0.2em] uppercase px-2 py-0.5 bg-[#070605] border border-[#dfb76c]/30 text-[#dfb76c]">
+                    TOP 59.29%
+                  </span>
+                </div>
+                <p className="text-xs text-stone-300/80 leading-relaxed font-sans mb-4">
+                  Active participant with a top 59.29% ranking, solving a wide range of algorithmic challenges to enhance problem-solving skills.
+                </p>
+              </div>
+              <a
+                href="https://leetcode.com/Tushar_Ranjan_Sahoo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto pt-3 border-t border-[#dfb76c]/15 flex items-center justify-between text-[10px] font-serif tracking-[0.22em] uppercase text-[#dfb76c] hover:text-[#fae3ad] transition-colors"
+              >
+                <span>Profile Link</span>
+                <span className="group-hover:translate-x-1 transition-transform">↗</span>
+              </a>
+            </div>
+
+            {/* GeeksforGeeks */}
+            <div className="archive-card rounded-sm p-6 relative overflow-hidden flex flex-col justify-between group hover:border-[#dfb76c]/50 transition-all duration-300">
+              <CornerAccents />
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-serif font-bold text-base sm:text-lg tracking-wider text-stone-100">
+                    GeeksforGeeks
+                  </span>
+                  <span className="text-[9px] font-serif tracking-[0.2em] uppercase px-2 py-0.5 bg-[#070605] border border-[#dfb76c]/30 text-[#dfb76c]">
+                    RANK 25 / 2000
+                  </span>
+                </div>
+                <p className="text-xs text-stone-300/80 leading-relaxed font-sans mb-4">
+                  Ranked 25 out of 2000 users, consistently solving complex problems and contributing to the technical community.
+                </p>
+              </div>
+              <a
+                href="https://auth.geeksforgeeks.org/user/tusharranjansahoo18/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto pt-3 border-t border-[#dfb76c]/15 flex items-center justify-between text-[10px] font-serif tracking-[0.22em] uppercase text-[#dfb76c] hover:text-[#fae3ad] transition-colors"
+              >
+                <span>Profile Link</span>
+                <span className="group-hover:translate-x-1 transition-transform">↗</span>
+              </a>
+            </div>
+
+            {/* CodeChef */}
+            <div className="archive-card rounded-sm p-6 relative overflow-hidden flex flex-col justify-between group hover:border-[#dfb76c]/50 transition-all duration-300">
+              <CornerAccents />
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-serif font-bold text-base sm:text-lg tracking-wider text-stone-100">
+                    CodeChef
+                  </span>
+                  <span className="text-[9px] font-serif tracking-[0.2em] uppercase px-2 py-0.5 bg-[#070605] border border-[#dfb76c]/30 text-[#dfb76c]">
+                    PEAK: 1439
+                  </span>
+                </div>
+                <p className="text-xs text-stone-300/80 leading-relaxed font-sans mb-4">
+                  Achieved a highest rating of 1439, demonstrating strong proficiency and speed in competitive programming rounds.
+                </p>
+              </div>
+              <a
+                href="https://www.codechef.com/users/bonu_2668/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto pt-3 border-t border-[#dfb76c]/15 flex items-center justify-between text-[10px] font-serif tracking-[0.22em] uppercase text-[#dfb76c] hover:text-[#fae3ad] transition-colors"
+              >
+                <span>Profile Link</span>
+                <span className="group-hover:translate-x-1 transition-transform">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* ══ TECHNICAL SKILLS DOSSIER ═════════════════════════════ */}
+        <div id="skills" className="mt-16 sm:mt-24 reveal-item scroll-hidden scroll-mt-24 sm:scroll-mt-28" data-delay="160">
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center space-x-3 mb-2">
+              <span className="w-6 sm:w-12 h-[1px] bg-gradient-to-r from-transparent to-[#dfb76c]/50" />
+              <span className="font-serif text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-[#edd89f]/80">
+                CAPABILITIES & TOOLING
+              </span>
+              <span className="w-6 sm:w-12 h-[1px] bg-gradient-to-l from-transparent to-[#dfb76c]/50" />
+            </div>
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-[0.2em] uppercase text-gold-leaf">
+              TECHNICAL SKILLS
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                title: 'Languages',
+                skills: ['Java', 'JavaScript', 'SQL']
+              },
+              {
+                title: 'Developer Tools',
+                skills: ['VS Code', 'IntelliJ IDEA', 'Eclipse', 'Maven', 'Git', 'Postman', 'Google Cloud Platform']
+              },
+              {
+                title: 'Technologies & Frameworks',
+                skills: ['Spring Boot', 'Spring MVC', 'Spring Security 6', 'Hibernate', 'JSP/Servlets', 'NodeJS', 'ExpressJs', 'ReactJs', 'Material UI', 'Tailwind CSS', 'Firebase', 'Redis', 'MongoDB', 'MySQL']
+              },
+              {
+                title: 'Core Subjects & Soft Skills',
+                skills: ['DSA', 'OOPs', 'DBMS', 'Computer Networks', 'Operating Systems', 'Compiler Design', 'Analytical Problem-solving', 'Team Player', 'Self-starter', 'Leadership', 'Mentoring']
+              }
+            ].map((cat) => (
+              <div key={cat.title} className="archive-card rounded-sm p-6 relative overflow-hidden">
+                <CornerAccents />
+                <h4 className="font-serif text-xs tracking-[0.22em] text-[#dfb76c] uppercase mb-4 pb-2 border-b border-[#dfb76c]/15">
+                  {cat.title}
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {cat.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-2.5 py-1 text-[11px] font-sans text-stone-200 bg-[#070605] border border-[#c5a059]/20 rounded-sm hover:border-[#dfb76c]/50 transition-colors"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ══ CERTIFICATIONS & EDUCATION ═══════════════════════════ */}
+        <div className="mt-16 sm:mt-24 grid grid-cols-1 md:grid-cols-2 gap-6 reveal-item scroll-hidden" data-delay="200">
+          
+          {/* Education */}
+          <div className="archive-card rounded-sm p-6 relative overflow-hidden flex flex-col justify-between">
+            <CornerAccents />
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-serif text-[9px] tracking-[0.25em] uppercase text-[#dfb76c]/80">
+                  ACADEMIC FOUNDATION
+                </span>
+                <span className="text-[10px] font-serif tracking-[0.2em] text-[#dfb76c] font-bold">
+                  8.6 CGPA
+                </span>
+              </div>
+              <h4 className="font-serif text-lg font-bold text-stone-100 tracking-wide">
+                Biju Patnaik University of Technology
+              </h4>
+              <p className="font-serif italic text-xs text-[#fae3ad]/80 mt-1">
+                Bachelor of Technology in Computer Science and Engineering
+              </p>
+              <p className="font-sans text-xs text-stone-400 mt-2">
+                Jun. 2020 – May. 2024
+              </p>
+            </div>
+            <div className="pt-4 mt-6 border-t border-[#dfb76c]/15 flex items-center justify-between text-[10px] font-serif tracking-[0.2em] uppercase text-[#edd89f]/60">
+              <span>Status</span>
+              <span className="text-[#dfb76c]">Graduate with Distinction</span>
+            </div>
+          </div>
+
+          {/* Certifications */}
+          <div className="archive-card rounded-sm p-6 relative overflow-hidden">
+            <CornerAccents />
+            <div className="mb-3">
+              <span className="font-serif text-[9px] tracking-[0.25em] uppercase text-[#dfb76c]/80">
+                INDUSTRY CREDENTIALS
+              </span>
+              <h4 className="font-serif text-lg font-bold text-stone-100 tracking-wide mt-1">
+                Certifications
+              </h4>
+            </div>
+            <ul className="space-y-2.5 mt-4">
+              {[
+                { name: 'Microsoft Certified: Azure AI Fundamentals', org: 'Microsoft' },
+                { name: 'JavaScript Essentials 1', org: 'Cisco' },
+                { name: 'Google Cloud Fundamentals: Core Infrastructure', org: 'Google Cloud' },
+                { name: 'Meta: Introduction to Front-End Development', org: 'Meta' },
+                { name: 'Meta: Introduction to Back-End Development', org: 'Meta' },
+              ].map((cert) => (
+                <li key={cert.name} className="flex items-start gap-2.5 text-xs text-stone-300 font-sans">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[#dfb76c] mt-1.5 shrink-0" />
+                  <div>
+                    <span className="text-stone-200 block">{cert.name}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
         </div>
 
         {/* ── Bottom anchor embellishment ────────────────────────── */}

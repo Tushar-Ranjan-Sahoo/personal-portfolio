@@ -39,7 +39,7 @@ export const AboutSection: React.FC = () => {
           </h2>
           {/* Descriptive Bio Text */}
           <p className="mt-4 text-[11px] sm:text-xs leading-relaxed text-[#867d71] font-normal font-sans">
-            I'm a digital designer & developer who believes in craftsmanship, clarity, and creating work that lasts. Every project is an opportunity to build something meaningful and make an impact.
+            I'm a Systems Engineer & full stack developer who believes in engineering excellence, clean microservice architecture, and creating enduring digital solutions.
           </p>
           {/* Link to Details */}
           <div className="mt-8">

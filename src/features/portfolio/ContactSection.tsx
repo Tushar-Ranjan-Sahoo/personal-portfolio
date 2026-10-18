@@ -13,9 +13,19 @@ const LinkedInIcon = () => (
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 );
-const TwitterIcon = () => (
+const LeetCodeIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-[14px] h-[14px]">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 .571.992l.067.098.243.327.34.408.43.468.514.498.59.496.658.465.717.408.766.331.803.238.83.136.843.028.847-.08.838-.186.817-.291.785-.393.74-.492.684-.588.618-.679.54-.766.452-.848.354-.925.247-.996.13-.1.01-.194a1.376 1.376 0 0 0-2.348-1.042l-.01.01-.01.01a3.025 3.025 0 0 1-.417.397 3.25 3.25 0 0 1-.482.327 3.42 3.42 0 0 1-.53.242 3.535 3.535 0 0 1-.563.146 3.585 3.585 0 0 1-.58.04 3.565 3.565 0 0 1-.582-.068 3.48 3.48 0 0 1-.568-.172 3.32 3.32 0 0 1-.539-.272 3.1 3.1 0 0 1-.493-.368 2.84 2.84 0 0 1-.43-.46 2.53 2.53 0 0 1-.35-.544 2.18 2.18 0 0 1-.25-.623 1.8 1.8 0 0 1-.13-.695c0-.236.035-.47.104-.694a2.26 2.26 0 0 1 .29-.646c.13-.2.28-.38.45-.53l4.57-4.88 4.79-5.11a1.374 1.374 0 0 0-.96-2.35zM11.69 13.92a1.375 1.375 0 0 0-1.375 1.375v.01a1.375 1.375 0 0 0 1.375 1.375h9.19a1.375 1.375 0 0 0 1.375-1.375v-.01a1.375 1.375 0 0 0-1.375-1.375h-9.19z" />
+  </svg>
+);
+const GeeksforGeeksIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-[14px] h-[14px]">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.2 13.6h-2.1c-.8 0-1.5-.7-1.5-1.5V9.9c0-.8.7-1.5 1.5-1.5h2.1c.4 0 .7.3.7.7s-.3.7-.7.7h-2.1v4.3h2.1c.4 0 .7.3.7.7s-.3.7-.7.7zm6.5 0h-2.1c-.8 0-1.5-.7-1.5-1.5V9.9c0-.8.7-1.5 1.5-1.5h2.1c.4 0 .7.3.7.7s-.3.7-.7.7h-2.1v4.3h2.1c.4 0 .7.3.7.7s-.3.7-.7.7z" />
+  </svg>
+);
+const CodeChefIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-[14px] h-[14px]">
+    <path d="M11.96 0A12 12 0 1 0 24 12.04 12.01 12.01 0 0 0 11.96 0zm4.27 15.54a5.95 5.95 0 0 1-4.27 1.76 5.92 5.92 0 0 1-5.93-5.94 5.93 5.93 0 0 1 5.93-5.93c1.6 0 3.07.64 4.14 1.68l-1.37 1.38a3.95 3.95 0 0 0-2.77-1.11 3.99 3.99 0 0 0-3.98 3.98 3.99 3.99 0 0 0 3.98 3.99c1.07 0 2.03-.43 2.74-1.12l1.53 1.31z" />
   </svg>
 );
 
@@ -253,9 +263,9 @@ export const ContactSection: React.FC = () => {
             {/* Contact details */}
             <div className="flex-1 space-y-4">
               {[
-                { label: 'Email', value: 'tusharranjansahoo07@gmail.com', href: 'mailto:tusharranjansahoo07@gmail.com' },
-                { label: 'Phone', value: '+91 7439 602 141', href: 'tel:+917439602141' },
-                { label: 'Location', value: 'Bhubaneswar, Odisha — India', href: '#' },
+                { label: 'Email', value: 'tusharranjansahoo18@gmail.com', href: 'mailto:tusharranjansahoo18@gmail.com' },
+                { label: 'Phone', value: '+91 78529 67633', href: 'tel:+917852967633' },
+                { label: 'Location', value: 'Pune, Maharashtra — India', href: '#' },
               ].map((d) => (
                 <div key={d.label}>
                   <span className="block font-serif text-[8px] tracking-[0.28em] uppercase text-[#edd89f]/45 mb-0.5">{d.label}</span>
@@ -264,14 +274,16 @@ export const ContactSection: React.FC = () => {
               ))}
             </div>
 
-            {/* Socials */}
+            {/* Socials & Profiles */}
             <div className="flex flex-col justify-end gap-3">
-              <span className="font-serif text-[8px] tracking-[0.28em] uppercase text-[#edd89f]/45">Find Me</span>
-              <div className="flex items-center gap-3">
+              <span className="font-serif text-[8px] tracking-[0.28em] uppercase text-[#edd89f]/45">Profiles & Networks</span>
+              <div className="flex flex-wrap items-center gap-2.5">
                 {[
-                  { icon: <GithubIcon />, href: 'https://github.com/Tushar-Ranjan-Sahoo', label: 'GitHub' },
-                  { icon: <LinkedInIcon />, href: 'https://linkedin.com/in/tushar-ranjan-sahoo', label: 'LinkedIn' },
-                  { icon: <TwitterIcon />, href: 'https://twitter.com/', label: 'Twitter' },
+                  { icon: <LinkedInIcon />, href: 'https://www.linkedin.com/in/tushar-ranjan-sahoo-590a8826b/', label: 'LinkedIn' },
+                  { icon: <GithubIcon />, href: 'https://github.com/Tushar-Ranjan-Sahoo/', label: 'GitHub' },
+                  { icon: <LeetCodeIcon />, href: 'https://leetcode.com/Tushar_Ranjan_Sahoo/', label: 'LeetCode' },
+                  { icon: <GeeksforGeeksIcon />, href: 'https://auth.geeksforgeeks.org/user/tusharranjansahoo18/', label: 'GeeksforGeeks' },
+                  { icon: <CodeChefIcon />, href: 'https://www.codechef.com/users/bonu_2668/', label: 'CodeChef' },
                 ].map((s) => (
                   <a
                     key={s.label}
@@ -279,6 +291,7 @@ export const ContactSection: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
+                    title={s.label}
                     className="w-8 h-8 border border-[#dfb76c]/20 flex items-center justify-center text-[#dfb76c]/60 hover:text-[#dfb76c] hover:border-[#dfb76c]/50 hover:shadow-[0_0_10px_-3px_rgba(223,183,108,0.35)] transition-all duration-300"
                   >
                     {s.icon}

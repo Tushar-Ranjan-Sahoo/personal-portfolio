@@ -49,9 +49,16 @@ export const ProjectGrid: React.FC = () => {
                 {project.description}
               </p>
               
-              <div className="mt-auto pt-4 border-t border-[#1f1e1a] flex items-center text-[11px] tracking-[0.24em] text-[#cfb682] group-hover:text-[#fff] transition-colors uppercase font-medium">
-                VIEW PROJECT 
-                <span className="ml-2 transform group-hover:translate-x-2 transition-transform duration-300 font-normal">→</span>
+              <div className="mt-auto pt-4 border-t border-[#1f1e1a] flex items-center">
+                <a
+                  href={project.link || '#work'}
+                  target={project.link ? '_blank' : undefined}
+                  rel={project.link ? 'noopener noreferrer' : undefined}
+                  className="inline-flex items-center text-[11px] tracking-[0.24em] text-[#cfb682] group-hover:text-[#fff] transition-colors uppercase font-medium"
+                >
+                  VIEW PROJECT 
+                  <span className="ml-2 transform group-hover:translate-x-2 transition-transform duration-300 font-normal">→</span>
+                </a>
               </div>
             </div>
           </div>

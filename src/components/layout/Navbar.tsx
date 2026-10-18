@@ -14,8 +14,10 @@ const navLinks: NavLink[] = [
   { number: '01.', label: 'HOME', href: '#home', id: 'home' },
   { number: '02.', label: 'ABOUT', href: '#about', id: 'about' },
   { number: '03.', label: 'EXPERIENCE', href: '#experience', id: 'experience' },
-  { number: '04.', label: 'WORK', href: '#work', id: 'work' },
-  { number: '05.', label: 'CONTACT', href: '#contact', id: 'contact' },
+  { number: '04.', label: 'PROBLEM SOLVING', href: '#problem-solving', id: 'problem-solving' },
+  { number: '05.', label: 'SKILLS', href: '#skills', id: 'skills' },
+  { number: '06.', label: 'WORK', href: '#work', id: 'work' },
+  { number: '07.', label: 'CONTACT', href: '#contact', id: 'contact' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -86,17 +88,17 @@ export const Navbar: React.FC = () => {
         </a>
 
         {/* ── Desktop Navigation ───────────────────────────────── */}
-        <nav className="hidden md:flex items-center space-x-5 lg:space-x-7" data-purpose="header-nav">
+        <nav className="hidden md:flex items-center space-x-2 lg:space-x-4 xl:space-x-5" data-purpose="header-nav">
           {navLinks.map((link) => {
             const isActive = activeId === link.id;
             return (
               <a
                 key={link.label}
                 href={link.href}
-                className={`group relative flex flex-col items-center text-[10px] lg:text-[11px] uppercase tracking-[0.26em] font-medium transition-colors duration-300 py-2 ${isActive ? 'text-[#edd89f]' : 'text-[#7a7469] hover:text-[#d8be82]'
+                className={`group relative flex flex-col items-center whitespace-nowrap text-[9px] lg:text-[10px] xl:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] xl:tracking-[0.22em] font-medium transition-colors duration-300 py-2 ${isActive ? 'text-[#edd89f]' : 'text-[#7a7469] hover:text-[#d8be82]'
                   }`}
               >
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5 whitespace-nowrap">
                   {isActive && (
                     <span className="inline-block w-1 h-1 rotate-45 bg-[#dfb76c] shadow-[0_0_4px_#dfb76c]" />
                   )}
