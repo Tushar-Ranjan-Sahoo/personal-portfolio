@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logoImage from '../../assets/TSlogo.png';
 
 const EMBLEM_URL = logoImage;
@@ -25,32 +25,55 @@ export const Navbar: React.FC = () => {
   const [imgSrc, setImgSrc] = useState(logoImage || EMBLEM_URL);
   const [activeId, setActiveId] = useState('home');
   const [scrolled, setScrolled] = useState(false);
+  const isClickingRef = useRef(false);
 
-  /* track scroll position for glow intensity */
+  /* Scroll position tracking & active section detection */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+
+      // If user recently clicked a nav link, skip scroll detection momentarily
+      if (isClickingRef.current) return;
+
+      const scrollPosition = window.scrollY + 180; // 180px offset for sticky header
+
+      // Check if user is scrolled to the very bottom of the page
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+        setActiveId('contact');
+        return;
+      }
+
+      // Check sections from bottom to top
+      const sectionElements = navLinks
+        .map((link) => {
+          const el = document.getElementById(link.id);
+          if (!el) return null;
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + window.scrollY;
+          return { id: link.id, top };
+        })
+        .filter(Boolean) as { id: string; top: number }[];
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        if (scrollPosition >= sectionElements[i].top) {
+          setActiveId(sectionElements[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  /* intersection observer – highlight active section */
-  useEffect(() => {
-    const ids = navLinks.map((l) => l.id);
-    const observers: IntersectionObserver[] = [];
-
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveId(id); },
-        { threshold: 0.35 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  const handleNavClick = (id: string) => {
+    setActiveId(id);
+    isClickingRef.current = true;
+    setTimeout(() => {
+      isClickingRef.current = false;
+    }, 850);
+  };
 
   return (
     <header
@@ -75,7 +98,10 @@ export const Navbar: React.FC = () => {
           aria-label="MR. Brand Home"
           className="group flex items-center shrink-0"
           href="#home"
-          onClick={() => setMobileMenuOpen(false)}
+          onClick={() => {
+            handleNavClick('home');
+            setMobileMenuOpen(false);
+          }}
         >
           <div className="relative flex items-center justify-center transition-transform duration-500 group-hover:scale-105 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28">
             <img
@@ -95,25 +121,54 @@ export const Navbar: React.FC = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className={`group relative flex flex-col items-center whitespace-nowrap text-[9px] lg:text-[10px] xl:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] xl:tracking-[0.22em] font-medium transition-colors duration-300 py-2 ${isActive ? 'text-[#edd89f]' : 'text-[#7a7469] hover:text-[#d8be82]'
-                  }`}
+                onClick={() => handleNavClick(link.id)}
+                className={`group relative flex flex-col items-center whitespace-nowrap text-[9px] lg:text-[10px] xl:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] xl:tracking-[0.22em] font-medium transition-all duration-300 py-2.5 px-1.5 cursor-pointer ${
+                  isActive ? 'text-[#fae3ad]' : 'text-[#7a7469] hover:text-[#fae3ad]'
+                }`}
               >
-                <span className="flex items-center gap-1.5 whitespace-nowrap">
-                  {isActive && (
-                    <span className="inline-block w-1 h-1 rotate-45 bg-[#dfb76c] shadow-[0_0_4px_#dfb76c]" />
-                  )}
-                  <span className="opacity-50 mr-0.5 font-mono">{link.number}</span>
-                  {link.label}
-                  {isActive && (
-                    <span className="inline-block w-1 h-1 rotate-45 bg-[#dfb76c] shadow-[0_0_4px_#dfb76c]" />
-                  )}
+                <span className="flex items-center gap-1.5 whitespace-nowrap transition-transform duration-200 group-hover:scale-105">
+                  {/* Left diamond - active or subtle hover hint */}
+                  <span
+                    className={`inline-block w-1 h-1 rotate-45 transition-all duration-300 ${
+                      isActive
+                        ? 'bg-[#dfb76c] shadow-[0_0_6px_#dfb76c] scale-100 opacity-100'
+                        : 'bg-[#dfb76c]/60 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 shadow-[0_0_4px_#dfb76c]'
+                    }`}
+                  />
+
+                  <span
+                    className={`font-mono text-[9px] lg:text-[10px] transition-colors duration-200 ${
+                      isActive ? 'text-[#dfb76c] opacity-90' : 'text-[#5e5749] group-hover:text-[#dfb76c]'
+                    }`}
+                  >
+                    {link.number}
+                  </span>
+
+                  <span className="tracking-widest">
+                    {link.label}
+                  </span>
+
+                  {/* Right diamond - active or subtle hover hint */}
+                  <span
+                    className={`inline-block w-1 h-1 rotate-45 transition-all duration-300 ${
+                      isActive
+                        ? 'bg-[#dfb76c] shadow-[0_0_6px_#dfb76c] scale-100 opacity-100'
+                        : 'bg-[#dfb76c]/60 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 shadow-[0_0_4px_#dfb76c]'
+                    }`}
+                  />
                 </span>
-                {/* Active underline with diamond centre */}
+
+                {/* Subtle hover golden underline for inactive items */}
+                {!isActive && (
+                  <span className="absolute -bottom-px left-1 right-1 h-[1px] bg-gradient-to-r from-transparent via-[#dfb76c]/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center pointer-events-none" />
+                )}
+
+                {/* Active underline with glowing diamond centre */}
                 {isActive && (
-                  <span className="absolute -bottom-px left-0 right-0 flex items-center justify-center">
-                    <span className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[#dfb76c]/70" />
-                    <span className="w-1 h-1 rotate-45 bg-[#dfb76c]/70 mx-0.5 shadow-[0_0_5px_#dfb76c]" />
-                    <span className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[#dfb76c]/70" />
+                  <span className="absolute -bottom-px left-0 right-0 flex items-center justify-center pointer-events-none">
+                    <span className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[#dfb76c]/80" />
+                    <span className="w-1.5 h-1.5 rotate-45 bg-[#dfb76c] mx-0.5 shadow-[0_0_6px_#dfb76c]" />
+                    <span className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[#dfb76c]/80" />
                   </span>
                 )}
               </a>
@@ -137,6 +192,7 @@ export const Navbar: React.FC = () => {
           <a
             className="hidden sm:inline-flex text-[10px] sm:text-[11px] tracking-[0.24em] uppercase text-[#cfb682] hover:text-[#fff] px-3.5 py-1.5 border border-[#3e3422] hover:border-[#cba864] hover:shadow-[0_0_12px_-2px_rgba(203,168,100,0.3)] transition-all duration-300"
             href="#contact"
+            onClick={() => handleNavClick('contact')}
           >
             GET IN TOUCH
           </a>
@@ -167,22 +223,36 @@ export const Navbar: React.FC = () => {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] font-medium py-2.5 transition-colors border-b border-[#1a1712]/60 last:border-0 ${isActive ? 'text-[#edd89f]' : 'text-[#7a7469] hover:text-[#d8be82]'
-                  }`}
+                onClick={() => {
+                  handleNavClick(link.id);
+                  setMobileMenuOpen(false);
+                }}
+                className={`group flex items-center justify-between text-[11px] uppercase tracking-[0.24em] font-medium py-3 px-2 transition-all duration-200 border-b border-[#1a1712]/60 last:border-0 ${
+                  isActive ? 'text-[#fae3ad] bg-[#dfb76c]/10' : 'text-[#7a7469] hover:text-[#fae3ad] hover:bg-[#dfb76c]/5'
+                }`}
               >
+                <div className="flex items-center gap-3">
+                  {isActive ? (
+                    <span className="w-1.5 h-1.5 rotate-45 bg-[#dfb76c] shadow-[0_0_6px_#dfb76c]" />
+                  ) : (
+                    <span className="w-1.5 h-1.5 rotate-45 border border-[#7a7469]/50 group-hover:border-[#dfb76c]" />
+                  )}
+                  <span className="text-[#5e5749] font-mono text-[10px] group-hover:text-[#dfb76c]">{link.number}</span>
+                  <span className="tracking-widest">{link.label}</span>
+                </div>
                 {isActive && (
-                  <span className="w-1 h-1 rotate-45 bg-[#dfb76c] shadow-[0_0_5px_#dfb76c]" />
+                  <span className="text-[9px] font-serif text-[#dfb76c] tracking-widest uppercase">Current</span>
                 )}
-                <span className="text-[#5e5749] font-mono text-[10px]">{link.number}</span>
-                {link.label}
               </a>
             );
           })}
 
           <a
             href="#contact"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => {
+              handleNavClick('contact');
+              setMobileMenuOpen(false);
+            }}
             className="block mt-4 text-center text-[10px] tracking-[0.24em] uppercase text-[#cfb682] hover:text-[#fff] px-3.5 py-2 border border-[#3e3422] hover:border-[#cba864] transition-all duration-300"
           >
             GET IN TOUCH

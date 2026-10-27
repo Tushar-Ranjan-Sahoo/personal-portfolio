@@ -206,7 +206,7 @@ export const ExperienceSection: React.FC = () => {
   return (
     <section
       id="experience"
-      className="relative w-full bg-[#070605] overflow-hidden"
+      className="relative w-full bg-[#070605] overflow-hidden scroll-mt-20 sm:scroll-mt-24"
       data-purpose="experience-section"
       ref={sectionRef}
     >

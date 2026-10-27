@@ -86,7 +86,7 @@ export const HeroSection: React.FC = () => {
         {/* =========================================================
             PART 2: INTEGRATED ABOUT & GODFATHER QUOTE SECTION (TEXT LEFT, IMAGE RIGHT / SIDE-BY-SIDE ON MOBILE)
         ========================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-12 items-center" id="about">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-12 items-center scroll-mt-20 sm:scroll-mt-24" id="about">
           
           {/* Mobile Side-by-side Top Row: Text Left, Car Image Right on Mobile */}
           <div className="col-span-1 md:col-span-8 grid grid-cols-12 gap-3 sm:gap-6 items-center">
